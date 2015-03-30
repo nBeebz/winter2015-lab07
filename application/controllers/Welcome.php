@@ -46,6 +46,7 @@ function order($filename)
 	// Present the list to choose from
     $this->data['customer'] = $order['customer'];
     $this->data['burgers'] = $order['burgers'];
+    $this->data['total'] = $order['total'];
 	$this->data['pagebody'] = 'justone';
 	$this->render();
 }
