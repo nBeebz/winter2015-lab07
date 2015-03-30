@@ -1,6 +1,6 @@
 <?php	
 	
-	function getXmlFiles( $files )
+	function getOrders( $files )
 	{
 		$result = array();
 		foreach( $files as $file )

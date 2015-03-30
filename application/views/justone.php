@@ -1,5 +1,6 @@
 <div class="row">
 	<h1>Order for {customer}</h1>
+	<p>{special}</p>
 	{burgers}
 		<hr>
 		<h3>Burger #{num}</h3>
@@ -19,6 +20,7 @@
 			{/sauces}
 		</ul>
 		<p>Price: {price}</p>
+		<p>Notes: {note}</p>
 	{/burgers}
 	<h4>Total: {total}</h4>
 </div>

@@ -8,19 +8,20 @@
  */
 class Menu extends CI_Model {
 
-    protected $xml = null;
-    protected $patty_names = array();
-    protected $patties = array();
+    public $patties = array();
+    public $toppings = array(); 
+    public $cheeses = array();
+    public $sauces = array();    
 
     // Constructor
     public function __construct() {
         parent::__construct();
-        $xml = simplexml_load_file(DATAPATH . 'menu.xml');
+        global $patties;        
+        global $toppings;
+        global $cheeses;
+        global $sauces;        
 
-        // build the list of patties - approach 1
-        foreach ($xml->patties->patty as $patty) {
-            $patty_names[(string) $patty['code']] = (string) $patty;
-        }
+        $xml = simplexml_load_file(DATAPATH . 'menu.xml');
 
         // build a full list of patties - approach 2
         foreach ($xml->patties->patty as $patty) {
@@ -30,19 +31,70 @@ class Menu extends CI_Model {
             $record->price = (float) $patty['price'];
             $patties[$record->code] = $record;
         }
-    }
 
-    // retrieve a list of patties, to populate a dropdown, for instance
-    function patties() {
-        return $this->patty_names;
+        foreach($xml->toppings->topping as $topping)
+        {
+            $record = new stdClass();
+            $record->code = (string) $topping['code'];
+            $record->name = (string) $topping;
+            $record->price = (float) $topping['price'];
+            $toppings[$record->code] = $record;
+        }
+
+        foreach($xml->cheeses->cheese as $cheese)
+        {
+            $record = new stdClass();
+            $record->code = (string) $cheese['code'];
+            $record->name = (string) $cheese;
+            $record->price = (float) $cheese['price'];
+            $cheeses[$record->code] = $record;
+        }
+
+
+        foreach($xml->sauces->sauce as $sauce)
+        {
+            $record = new stdClass();
+            $record->code = (string) $sauce['code'];
+            $record->name = (string) $sauce;
+            $record->price = (float) $sauce['price'];
+           $sauces[$record->code] = $record;
+        }
     }
 
     // retrieve a patty record, perhaps for pricing
     function getPatty($code) {
-        if (isset($this->patties[$code]))
-            return $this->patties[$code];
+        global $patties;
+        $code = (string)$code;
+        if ($patties[$code])
+            return (array)$patties[$code];
         else
             return null;
     }
 
+    function getTopping($code) {
+        global $toppings;
+        $code = (string)$code;
+        if (isset($toppings[$code]))
+            return (array)$toppings[$code];
+        else
+            return null;
+    }
+
+    function getCheese($code) {
+        global $cheeses;
+        $code = (string)$code;
+        if (isset($cheeses[$code]))
+            return (array)$cheeses[$code];
+        else
+            return null;
+    }
+
+    function getSauce($code) {
+        global $sauces;
+        $code = (string)$code;
+        if (isset($sauces[$code]))
+            return (array)$sauces[$code];
+        else
+            return null;
+    }
 }
